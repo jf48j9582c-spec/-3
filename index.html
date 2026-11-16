@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07120f"><title>Rick & Morty — Межгалактический тест</title>
+<style>
+:root{--bg:#07120f;--panel:#101f1a;--panel2:#152a22;--green:#9cff57;--cyan:#62f5d0;--text:#efffee;--muted:#a9c1b4;--pink:#ff79b8;--bad:#ff7777}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(ellipse at 15% 5%,#1d5038 0,transparent 35%),radial-gradient(ellipse at 90% 80%,#183f48 0,transparent 35%),var(--bg);padding:20px}
+.wrap{width:min(760px,100%);margin:0 auto}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:5px 0 22px;color:var(--muted);font-size:13px;letter-spacing:.08em;text-transform:uppercase}.logo{color:var(--green);font-weight:900}.card{background:linear-gradient(145deg,rgba(21,42,34,.97),rgba(10,25,20,.97));border:1px solid #345b48;border-radius:24px;padding:clamp(20px,5vw,38px);box-shadow:0 20px 70px #0008;position:relative;overflow:hidden}.card:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:linear-gradient(var(--green),var(--cyan))}h1{font-size:clamp(32px,7vw,54px);line-height:1.02;margin:12px 0 18px;letter-spacing:-.04em}h1 span{color:var(--green)}h2{font-size:clamp(22px,5vw,30px);line-height:1.2;margin:12px 0 20px}.sub{color:var(--muted);max-width:55ch}.portal{font-size:54px;filter:drop-shadow(0 0 16px #9cff5770)}.tag{display:inline-block;border:1px solid #52765f;color:var(--cyan);padding:5px 10px;border-radius:99px;font-size:12px;letter-spacing:.08em;text-transform:uppercase}.btn{border:0;border-radius:13px;padding:14px 20px;font:700 16px system-ui;cursor:pointer;background:var(--green);color:#102014;box-shadow:0 5px 0 #568b30;transition:.15s}.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #568b30}.btn.secondary{background:#203c30;color:var(--text);border:1px solid #52765f;box-shadow:none}.btn:disabled{opacity:.45;cursor:not-allowed}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.meta{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-bottom:10px}.bar{height:9px;background:#263d32;border-radius:99px;overflow:hidden;margin-bottom:24px}.fill{height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--cyan));transition:width .3s}.answers{display:grid;gap:11px}.answer{width:100%;text-align:left;padding:15px 16px;border-radius:14px;border:1px solid #41624f;background:#13271f;color:var(--text);font:600 15px/1.4 system-ui;cursor:pointer;transition:.15s}.answer:hover{border-color:var(--green);background:#1c382a}.answer.correct{border-color:var(--green);background:#1c472b}.answer.wrong{border-color:var(--bad);background:#48252a}.answer:disabled{cursor:default}.feedback{margin-top:18px;padding:15px;border-radius:14px;background:#203b2e;border:1px solid #52765f;color:#dfffe8}.feedback.bad{background:#3d292b;border-color:#895157}.small{color:var(--muted);font-size:13px}.hidden{display:none!important}.score{font-size:clamp(48px,12vw,76px);font-weight:900;color:var(--green);line-height:1}.result-list{padding-left:20px}.result-list li{margin:10px 0}.footer{text-align:center;color:#789385;font-size:12px;margin:18px 0}.pill{display:inline-block;background:#203b2e;border-radius:99px;padding:5px 10px;color:var(--cyan);font-size:12px}.question-kicker{color:var(--cyan);font-size:13px;text-transform:uppercase;letter-spacing:.1em}
+@media(max-width:480px){body{padding:12px}.top{font-size:11px}.actions .btn{width:100%}.card{border-radius:18px}}
+</style>
+</head>
+<body><main class="wrap">
+<div class="top"><div class="logo">✦ INTERDIMENSIONAL QUIZ</div><div>Сектор C-137</div></div>
+<section class="card" id="start">
+ <div class="portal">🌀</div><div class="tag">Проверка на адекватность не предусмотрена</div>
+ <h1>Насколько хорошо ты знаешь <span>«Рика и Морти»?</span></h1>
+ <p class="sub">Портальная пушка доставила тебя на экзамен в Цитадель Риков. Впереди 15 вопросов: от разогрева до настоящей межгалактической дичи. Ошибки не отменяют твою ценность как формы жизни.</p>
+ <p class="small">⏱ Примерно 4–6 минут · 15 вопросов · 3 уровня сложности</p>
+ <div class="actions"><button class="btn" id="startBtn">Начать тест →</button></div>
+</section>
+<section class="card hidden" id="quiz">
+ <div class="meta"><span id="progressText">ВОПРОС 1 / 15</span><span id="level">РАЗОГРЕВ</span></div><div class="bar"><div class="fill" id="progress"></div></div>
+ <div class="question-kicker">Досье межпространственного наблюдателя</div><h2 id="question"></h2><div class="answers" id="answers"></div><div id="feedback" class="feedback hidden" aria-live="polite"></div>
+ <div class="actions"><button class="btn" id="nextBtn" disabled>Следующий вопрос →</button></div>
+</section>
+<section class="card hidden" id="result">
+ <div class="portal">🏆</div><div class="tag">Отчёт лаборатории готов</div><h1 id="rank">Результат</h1><div class="score" id="score">0/15</div><p class="sub" id="resultText"></p><p><span class="pill" id="percent"></span></p>
+ <h2>Разбор полётов</h2><div id="review"></div>
+ <div class="actions"><button class="btn" id="againBtn">Пройти ещё раз ↻</button><button class="btn secondary" id="shareBtn">Поделиться результатом ↗</button></div>
+</section>
+<div class="footer">Неофициальная фан-викторина. Все порталы ведут к новым вопросам, а не к гарантиям безопасности.</div>
+</main>
+<script>
+const questions=[
+{level:'РАЗОГРЕВ',q:'Как зовут внука, который чаще всего путешествует с Риком?',a:['Морти','Стив','Джерри-младший','Скванчи'],c:0,e:'Морти Смит — внук Рика и его самый частый спутник в приключениях.'},
+{level:'РАЗОГРЕВ',q:'Как зовут сестру Морти?',a:['Бет','Джессика','Саммер','Тэмми'],c:2,e:'Саммер — старшая сестра Морти.'},
+{level:'РАЗОГРЕВ',q:'Кем работает Бет по профессии?',a:['Учительницей','Кардиохирургом','Ветеринарным хирургом','Астронавтом'],c:2,e:'Бет — ветеринарный хирург, специализирующийся на лошадях.'},
+{level:'РАЗОГРЕВ',q:'Как зовут отца Морти и Саммер?',a:['Нимбус','Джерри','Бирдперсон','Кромбопулос Майкл'],c:1,e:'Джерри Смит — отец семейства Смитов.'},
+{level:'РАЗОГРЕВ',q:'Как обычно Рик перемещается между измерениями?',a:['На космическом автобусе','Через портал из портальной пушки','На машине времени','С помощью волшебного кольца'],c:1,e:'Фирменный способ Рика — зелёный портал, открываемый портальной пушкой.'},
+{level:'СРЕДНИЙ УРОВЕНЬ',q:'Как называется организация, объединяющая множество Риков и Морти?',a:['Совет Земли','Цитадель Риков','Галактический клуб','Академия порталов'],c:1,e:'Цитадель Риков — место, где живут и взаимодействуют версии Рика и Морти из разных измерений.'},
+{level:'СРЕДНИЙ УРОВЕНЬ',q:'Как зовут друга Рика, которого часто можно узнать по птичьему облику?',a:['Птичья Личность','Мистер Жопосранчик','Крокубот','Фарт'],c:0,e:'Птичья Личность (Birdperson) — давний друг и соратник Рика.'},
+{level:'СРЕДНИЙ УРОВЕНЬ',q:'Как зовут разумный коллективный организм, с которым у Рика были отношения?',a:['Планетина','Юнити','Гея','Аманда'],c:1,e:'Юнити — коллективный разум, с которым Рик был близок.'},
+{level:'СРЕДНИЙ УРОВЕНЬ',q:'Кто такой Мистер Жопосранчик (Mr. Poopybutthole)?',a:['Учитель Морти','Персонаж — знакомый семьи','Робот Рика','Президент Цитадели'],c:1,e:'Это необычный персонаж, которого семья знает и который появляется в разных историях.'},
+{level:'СРЕДНИЙ УРОВЕНЬ',q:'Как называется межгалактическая сила, которая преследует Рика и его близких в ранних сериях?',a:['Галактическая Федерация','Орден портала','Совет Саммер','Космическая полиция времени'],c:0,e:'Галактическая Федерация — одна из крупных сил, конфликтующих с Риком.'},
+{level:'СЛОЖНЫЙ УРОВЕНЬ',q:'Как обычно называют Морти, который становится центральной фигурой большой сюжетной линии и скрывает свои планы?',a:['Злой Морти','Президент Морти','Морти Прайм','Морти-робот'],c:0,e:'Злой Морти — известный персонаж, связанный с Цитаделью и масштабным планом.'},
+{level:'СЛОЖНЫЙ УРОВЕНЬ',q:'Что происходит с родным миром Рика и Морти в серии «Rick Potion #9»?',a:['Он становится полностью ледяным','Мир превращается в мир мутировавших существ','Все люди исчезают в космосе','Земля уменьшается до размера монеты'],c:1,e:'После неудачного эксперимента мир оказывается населён мутировавшими людьми, которых фанаты часто называют кроненбергами.'},
+{level:'СЛОЖНЫЙ УРОВЕНЬ',q:'Как зовут президента, который появляется в сериале и часто спорит с Риком?',a:['Президент Кёртис','Президент Морти','Президент Скванчи','Президент Глутти'],c:0,e:'Президент Кёртис — президент США в мире сериала.'},
+{level:'СЛОЖНЫЙ УРОВЕНЬ',q:'Как называется устройство, позволяющее Рику быстро перемещаться между реальностями?',a:['Межпространственный компас','Портальная пушка','Квантовый браслет','Двигатель Галактор'],c:1,e:'Портальная пушка — одно из главных изобретений Рика.'},
+{level:'СЛОЖНЫЙ УРОВЕНЬ',q:'Какой принцип лучше всего описывает отношение Рика к большинству авторитетов?',a:['Он всегда подчиняется правилам','Он доверяет всем начальникам','Он крайне скептически относится к авторитетам','Он мечтает стать школьным директором'],c:2,e:'Рик обычно не признаёт авторитеты и предпочитает действовать по собственным правилам.'}
+];
+let index=0,score=0,answers=[];
+const $=id=>document.getElementById(id);
+function show(id){['start','quiz','result'].forEach(x=>$(x).classList.toggle('hidden',x!==id))}
+$('startBtn').onclick=()=>{index=0;score=0;answers=[];render();show('quiz')};
+function render(){let q=questions[index];$('progressText').textContent=`ВОПРОС ${index+1} / ${questions.length}`;$('level').textContent=q.level;$('progress').style.width=`${index/questions.length*100}%`;$('question').textContent=q.q;$('feedback').className='feedback hidden';$('feedback').textContent='';$('nextBtn').disabled=true;$('nextBtn').textContent=index===questions.length-1?'Узнать результат →':'Следующий вопрос →';$('answers').innerHTML='';q.a.forEach((a,i)=>{let b=document.createElement('button');b.className='answer';b.textContent=`${String.fromCharCode(65+i)}. ${a}`;b.onclick=()=>choose(i);$('answers').appendChild(b)})}
+function choose(n){let q=questions[index],ok=n===q.c;if(ok)score++;answers.push({chosen:n,correct:q.c});[...$('answers').children].forEach((b,i)=>{b.disabled=true;if(i===q.c)b.classList.add('correct');if(i===n&&!ok)b.classList.add('wrong')});$('feedback').className='feedback'+(ok?'':' bad');$('feedback').innerHTML=`<strong>${ok?'✓ Верно!':'✕ Не совсем.'}</strong><br>${q.e}`;$('nextBtn').disabled=false;$('progress').style.width=`${(index+1)/questions.length*100}%`}
+$('nextBtn').onclick=()=>{if(index<questions.length-1){index++;render()}else finish()};
+function finish(){show('result');let pct=Math.round(score/questions.length*100),rank,desc;if(score>=13){rank='Гений уровня Рика';desc='Тебя подозрительно хорошо подготовили. Рик уже думает, не украсть ли твои мозги.'}else if(score>=10){rank='Межпространственный эксперт';desc='Ты ориентируешься в мультивселенной лучше большинства её обитателей.'}else if(score>=6){rank='Стажёр Цитадели';desc='Неплохо! Но перед самостоятельным порталом стоит ещё немного повторить материалы.'}else{rank='Межгалактический турист';desc='Ты пока только прилетел. Зато впереди целая мультивселенная для изучения.'}$('rank').textContent=rank;$('score').textContent=`${score}/${questions.length}`;$('resultText').textContent=desc;$('percent').textContent=`Точность ответов: ${pct}%`;
+let wrong=answers.map((a,i)=>({...a,q:questions[i]})).filter(x=>x.chosen!==x.correct);$('review').innerHTML=wrong.length?'<ol class="result-list">'+wrong.map(x=>`<li><strong>${escapeHtml(x.q.q)}</strong><br><span class="small">Твой ответ: ${escapeHtml(x.q.a[x.chosen])}. Правильно: ${escapeHtml(x.q.a[x.correct])}.</span></li>`).join('')+'</ol>':'<p>Ни одной ошибки. Даже Рик вынужден признать результат.</p>'}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('againBtn').onclick=()=>{$('startBtn').click()};$('shareBtn').onclick=async()=>{let t=`Я прошёл тест по «Рику и Морти» и набрал ${score}/15! Моё звание: ${$('rank').textContent}. Сможешь лучше?`;try{if(navigator.share)await navigator.share({title:'Мой результат — Рик и Морти',text:t,url:location.href});else{await navigator.clipboard.writeText(t+' '+location.href);$('shareBtn').textContent='Скопировано ✓'}}catch(e){}}
+</script></body></html>
